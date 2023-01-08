@@ -10,6 +10,15 @@ export class AuthService {
 
   async createUser(user: User): Promise<User> {
     const createdUser = new this.userModel(user);
+    if (
+      !createdUser.firstName ||
+      !createdUser.lastName ||
+      !createdUser.email ||
+      !createdUser.password ||
+      !createdUser.role
+    ) {
+      throw new BadRequestException('All fields are required');
+    }
     this.validatePassword(createdUser, createdUser.password);
     this.validateEmail(createdUser, createdUser.email);
     const salt = await bcrypt.genSalt(10);
