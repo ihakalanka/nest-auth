@@ -11,6 +11,7 @@ export class AuthService {
   async createUser(user: User): Promise<User> {
     const createdUser = new this.userModel(user);
     this.validatePassword(createdUser, createdUser.password);
+    this.validateEmail(createdUser, createdUser.email);
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(createdUser.password, salt);
     createdUser.password = hash;
@@ -51,6 +52,16 @@ export class AuthService {
       throw new BadRequestException('Password must not contain any spaces');
     } else {
       return true;
+    }
+  }
+
+  validateEmail(user: User, email: string) {
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    if (emailRegex.test(email)) {
+      return true;
+    } else {
+      throw new BadRequestException('Email is not valid');
     }
   }
 }
