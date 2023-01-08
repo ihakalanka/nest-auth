@@ -23,8 +23,8 @@ export class AuthService {
     ) {
       throw new BadRequestException('All fields are required');
     }
-    this.validatePassword(createdUser, createdUser.password);
-    this.validateEmail(createdUser, createdUser.email);
+    this.validatePassword(createdUser.password);
+    this.validateEmail(createdUser.email);
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(createdUser.password, salt);
     createdUser.password = hash;
@@ -36,7 +36,7 @@ export class AuthService {
     }
   }
 
-  validatePassword(user: User, password: string) {
+  validatePassword(password: string) {
     if (password.length < 6) {
       throw new BadRequestException(
         'Password must be at least 6 characters long',
@@ -68,7 +68,7 @@ export class AuthService {
     }
   }
 
-  validateEmail(user: User, email: string) {
+  validateEmail(email: string) {
     const emailRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     if (emailRegex.test(email)) {
