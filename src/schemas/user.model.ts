@@ -25,3 +25,12 @@ export const UserSchema = new mongoose.Schema({
   },
   createdAt: { type: Date, default: Date.now },
 });
+
+export interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: string;
+  createdAt: Date;
+}
