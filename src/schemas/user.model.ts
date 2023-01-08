@@ -1,9 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
-  username: String,
-  password: String,
-  /* firstName: { type: String, required: true },
+  firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: {
     type: String,
@@ -15,7 +13,8 @@ export const UserSchema = new mongoose.Schema({
       validator: (v: string) => {
         return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(v);
       },
-      message: (props) => `${props.value} is not a valid email!`,
+      message: (props: { value: any }) =>
+        `${props.value} is not a valid email!`,
     },
   },
   password: { type: String, required: true },
@@ -25,16 +24,14 @@ export const UserSchema = new mongoose.Schema({
     default: 'user',
     enum: ['user', 'admin'],
   },
-  createdAt: { type: Date, default: Date.now }, */
+  createdAt: { type: Date, default: Date.now },
 });
 
 export interface User {
-  /* firstName: string;
+  firstName: string;
   lastName: string;
   email: string;
   password: string;
   role: string;
-  createdAt: Date; */
-  username: string;
-  password: string;
+  createdAt: Date;
 }
