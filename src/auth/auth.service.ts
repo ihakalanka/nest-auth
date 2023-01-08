@@ -73,4 +73,17 @@ export class AuthService {
       throw new BadRequestException('Email is not valid');
     }
   }
+
+  async login(user: User): Promise<any> {
+    const foundUser = await this.userModel.findOne({ email: user.email });
+    if (!foundUser) {
+      throw new BadRequestException('User not found');
+    }
+    const isMatch = await bcrypt.compare(user.password, foundUser.password);
+    if (!isMatch) {
+      throw new BadRequestException('Invalid credentials');
+    }
+    const payload = { role: user.role, name: user.firstName };
+    return foundUser;
+  }
 }
